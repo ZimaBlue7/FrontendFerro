@@ -1,0 +1,62 @@
+.container h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.container p {
+  color: #64748b;
+  margin-bottom: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form input {
+  height: 52px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 12px;
+
+  padding: 0 15px;
+
+  font-size: 16px;
+}
+
+.captcha {
+  height: 70px;
+
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+
+  border-radius: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+
+  font-size: 30px;
+  font-weight: bold;
+
+  letter-spacing: 8px;
+}
+
+.form button {
+  height: 52px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
