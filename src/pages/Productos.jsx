@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BASE_URL = "https://stock-0-0-1.onrender.com";
+const BASE_URL =
+  import.meta.env.VITE_API_URL;
 
 const Productos = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Productos = () => {
       const productosData = Array.isArray(data) ? data : data.content || [];
       setProductos(productosData);
       setError(null);
-    } catch (err) {
+    } catch {
       setError('No se pudieron cargar los productos.');
     } finally {
       setLoading(false);
@@ -25,7 +26,8 @@ const Productos = () => {
   };
 
   const eliminarProducto = async (id) => {
-    if (!window.confirm('¿Estás seguro de que quieres eliminar este producto?')) return;
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este producto?'))
+      return;
     try {
       const response = await fetch(`${BASE_URL}/article/?id=${id}`, {
         method: 'DELETE',
@@ -44,12 +46,15 @@ const Productos = () => {
 
   if (loading) return <p style={{ padding: '40px' }}>Cargando productos...</p>;
 
-  if (error) return (
-    <div style={{ padding: '40px' }}>
-      <p style={{ color: 'red' }}>{error}</p>
-      <button onClick={fetchProductos} className="primary-button">Reintentar</button>
-    </div>
-  );
+  if (error)
+    return (
+      <div style={{ padding: '40px' }}>
+        <p style={{ color: 'red' }}>{error}</p>
+        <button onClick={fetchProductos} className="primary-button">
+          Reintentar
+        </button>
+      </div>
+    );
 
   return (
     <div>
@@ -58,7 +63,10 @@ const Productos = () => {
           <h1 className="page-title">Productos</h1>
           <p className="page-subtitle">Gestiona los productos del sistema.</p>
         </div>
-        <button onClick={() => navigate('/producto-form')} className="primary-button">
+        <button
+          onClick={() => navigate('/producto-form')}
+          className="primary-button"
+        >
           + Nuevo Producto
         </button>
       </div>

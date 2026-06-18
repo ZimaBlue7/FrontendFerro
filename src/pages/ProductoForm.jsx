@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "https://stock-0-0-1.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const ProductoForm = () => {
   const navigate = useNavigate();
