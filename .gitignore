@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.env
+*.env.local
+zimablue-transformacion-digital-ferroelectricos-aac81f3e-b1e4-42fb-b729-0e7a05327c85.json
