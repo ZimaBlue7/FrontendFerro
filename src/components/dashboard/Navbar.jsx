@@ -1,14 +1,21 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('ferroelectricos_session');
+    navigate('/login');
+  };
+
   const links = [
-    { name: "Inicio", path: "/" },
-    { name: "Productos", path: "/productos" },
-    { name: "Categorías", path: "/categorias" },
-    { name: "Proveedores", path: "/proveedores" },
-    { name: "Usuarios", path: "/usuarios" },
-    { name: "Reportes", path: "/reportes" },
-    { name: "Configuración", path: "/configuracion" },
+    { name: 'Inicio', path: '/home' },
+    { name: 'Productos', path: '/productos' },
+    { name: 'Categorías', path: '/categorias' },
+    { name: 'Proveedores', path: '/proveedores' },
+    { name: 'Usuarios', path: '/usuarios' },
+    { name: 'Reportes', path: '/reportes' },
+    { name: 'Configuración', path: '/configuracion' },
   ];
 
   return (
@@ -20,16 +27,16 @@ const Navbar = () => {
           <NavLink
             key={link.path}
             to={link.path}
-            className={({ isActive }) => (isActive ? "active-link" : "link")}
+            className={({ isActive }) => (isActive ? 'active-link' : 'link')}
           >
             {link.name}
           </NavLink>
         ))}
       </div>
 
-      <NavLink to="/login" className="secondary-button">
+      <button onClick={handleLogout} className="secondary-button">
         Salir
-      </NavLink>
+      </button>
     </nav>
   );
 };

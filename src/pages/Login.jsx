@@ -1,13 +1,7 @@
-import { useState } from "react";
-import AuthModal from "../components/auth/AuthModal";
+import LoginForm from '../components/auth/LoginForm';
 
 const Login = () => {
-  const [isOpen, setIsOpen] = useState(true);
-
-  return (
-    <div className="login-page">
-      <AuthModal isOpen={isOpen} onClose={() => setIsOpen(true)} />
-    </div>
-  );
+  return <LoginForm />;
 };
+
 export default Login;
