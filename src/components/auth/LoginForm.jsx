@@ -28,7 +28,7 @@ const LoginForm = () => {
     <div className={styles.container}>
       <div className={styles.card}>
         <h1 className={styles.title}>Ferroeléctricos Olaya</h1>
-        <p className={styles.subtitle}>Panel administrativo</p>
+        {/* <p className={styles.subtitle}>Panel </p> */}
         <div className={styles.divider} />
         <p className={styles.hint}>Inicia sesión para continuar</p>
         <div className={styles.googleWrapper}>

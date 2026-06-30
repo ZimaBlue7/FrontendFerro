@@ -11,6 +11,9 @@ import ProductoForm from '../pages/ProductoForm';
 import UsuarioForm from '../pages/UsuarioForm';
 import Categorias from '../pages/Categorias';
 import Proveedores from '../pages/Proveedores';
+import Alertas from '../pages/Alertas';
+import Movimientos from '../pages/Movimientos';
+import Catalogo from '../pages/Catalogo';
 
 const AppRouter = () => {
   return (
@@ -38,6 +41,9 @@ const AppRouter = () => {
           <Route path="/producto-form" element={<ProductoForm />} />
           <Route path="/categorias" element={<Categorias />} />
           <Route path="/proveedores" element={<Proveedores />} />
+          <Route path="/alertas" element={<Alertas />} />
+          <Route path="/movimientos" element={<Movimientos />} />
+          <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/usuario-form" element={<UsuarioForm />} />
         </Route>
       </Routes>

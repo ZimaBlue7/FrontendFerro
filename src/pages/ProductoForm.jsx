@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { brandsApi, categoriesApi, productsApi, storage } from "../services/api";
-
-const META_KEY = "ferroelectricos_product_meta";
+import { brandsApi, categoriesApi, productOverrides, productsApi } from "../services/api";
+import { getProductMeta, saveProductMeta } from "../services/inventory";
 
 const initialForm = {
   name: "",
@@ -13,10 +12,6 @@ const initialForm = {
   brandId: "",
   categoryIds: [],
 };
-
-const getProductMeta = () => storage.get(META_KEY, {});
-
-const saveProductMeta = (meta) => storage.set(META_KEY, meta);
 
 const ProductoForm = () => {
   const navigate = useNavigate();
@@ -68,8 +63,11 @@ const ProductoForm = () => {
                 5
             ),
             price: String(product.price ?? ""),
-            brandId: String(product.brand?.id || ""),
-            categoryIds: product.categories?.map((category) => category.id) || [],
+            brandId: String(product.brand?.id ?? product.brandId ?? ""),
+            categoryIds:
+              product.categories?.map((category) => category.id) ||
+              product.categoryIds ||
+              [],
           });
         }
       } catch {
@@ -128,6 +126,26 @@ const ProductoForm = () => {
     });
   };
 
+  const buildLocalProduct = (productId) => {
+    const brand = marcas.find((item) => String(item.id) === String(form.brandId));
+    const categories = categorias.filter((item) =>
+      form.categoryIds.some((categoryId) => String(categoryId) === String(item.id))
+    );
+
+    return {
+      id: productId,
+      name: form.name.trim(),
+      description: form.description.trim(),
+      stock: Number(form.stock),
+      price: Number(form.price),
+      brand,
+      brandId: Number(form.brandId),
+      categories,
+      categoryIds: form.categoryIds.map(Number),
+      localOnly: true,
+    };
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
@@ -154,7 +172,17 @@ const ProductoForm = () => {
       persistLocalMeta(response?.id || payload.id);
       navigate("/productos");
     } catch {
-      setError("Error al guardar el producto. Verifica los datos e intenta de nuevo.");
+      const localProduct = buildLocalProduct(payload.id);
+
+      if (isEditing) {
+        productOverrides.set(payload.id, localProduct);
+        persistLocalMeta(payload.id);
+      } else {
+        const createdProduct = productOverrides.create(localProduct);
+        persistLocalMeta(createdProduct.id);
+      }
+
+      navigate("/productos");
     } finally {
       setLoading(false);
     }
