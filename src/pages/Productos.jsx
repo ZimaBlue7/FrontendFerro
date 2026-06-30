@@ -1,31 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { productsApi, storage } from "../services/api";
-
-const META_KEY = "ferroelectricos_product_meta";
-
-const getProductMeta = () => storage.get(META_KEY, {});
-
-const saveProductMeta = (meta) => storage.set(META_KEY, meta);
-
-const getMinimumStock = (product, meta) =>
-  Number(
-    product.minimumStock ??
-      product.minStock ??
-      product.stockMinimo ??
-      meta[product.id]?.minimumStock ??
-      5
-  );
-
-const isInactive = (product, meta) =>
-  Boolean(product.active === false || product.status === "INACTIVE" || meta[product.id]?.inactive);
-
-const formatCurrency = (value) =>
-  new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(Number(value || 0));
+import { productsApi } from "../services/api";
+import {
+  formatCurrency,
+  getMinimumStock,
+  getProductCategories,
+  getProductMeta,
+  getProviderName,
+  isInactive,
+  saveProductMeta,
+  syncStockAlerts,
+} from "../services/inventory";
 
 const Productos = () => {
   const navigate = useNavigate();
@@ -53,7 +38,9 @@ const Productos = () => {
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      setProductos(await productsApi.list());
+      const products = await productsApi.list();
+      setProductos(products);
+      syncStockAlerts(products);
       setError("");
     } catch {
       setError("No se pudieron cargar los productos.");
@@ -155,11 +142,11 @@ const Productos = () => {
                     <small>{producto.description || "Sin descripción"}</small>
                   </td>
                   <td>
-                    {producto.categories?.length
-                      ? producto.categories.map((category) => category.name).join(", ")
-                      : "Sin categoría"}
+                    {getProductCategories(producto).length
+                      ? getProductCategories(producto).map((category) => category.name).join(", ")
+                      : "Sin categoria"}
                   </td>
-                  <td>{producto.brand?.name || "Sin proveedor"}</td>
+                  <td>{getProviderName(producto)}</td>
                   <td>{formatCurrency(producto.price)}</td>
                   <td>{producto.stock}</td>
                   <td>{producto.minimumStock}</td>
